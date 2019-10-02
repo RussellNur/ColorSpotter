@@ -10,14 +10,11 @@ from matplotlib import pyplot as plt
 colorsArray = [['red'], ['orange'], ['yellow'], ['green'], ['blue'], ['purple'], ['brown'], ['gray'], ['pink']]
 
 # read file
-with open('/Users/RuslanNuriev/PycharmProjects/ColorSpotter/venv/bin/colorsclassifier-export-2.json', 'r') as myfile:
+with open('colorsclassifier-export-2.json', 'r') as myfile:
     data = myfile.read()
 
 # parse file
 obj = json.loads(data)
-
-
-#print("R: " + str(obj['colors']))
 
 keys = obj.keys()
 
@@ -27,10 +24,6 @@ colors = []
 targetLabels = []
 
 for key in keys:
- #   print(obj[key]['red'])
- #   print(obj[key]['green'])
- #   print(obj[key]['blue'])
- #   print(obj[key]['color'])
 
     # Normalize data
     colorsElement = [obj[key]['red'] / 255, obj[key]['green'] / 255, obj[key]['blue'] / 255]
@@ -77,13 +70,10 @@ model.add(Activation('softmax'))
 # Define learning rate
 lr = 0.02
 
-# Cost function
-#cost = tf.nn.softmax_cross_entropy_with_logits(logits=1, labels = y, name='softmax_cost_function')
-#cost = tf.reduce_mean(cost)
-
 # Creating an optimizer
 #with tf.name_scope('train') as scope:
-optimizer = tf.train.AdagradOptimizer(learning_rate=lr)#.minimize(cost)
+#optimizer = keras.optimizers.Adam(lr=lr)
+optimizer = tf.train.AdamOptimizer(learning_rate=lr)#.minimize(cost)
 
 model.compile(optimizer=optimizer,
               loss='categorical_crossentropy',
@@ -140,21 +130,3 @@ print(colorsArray[prediction8.argmax(1)[0]])
 prediction9 = model.predict(np.array([[255, 153, 51]]))
 print('Should be Orange. Predicted:')
 print(colorsArray[prediction9.argmax(1)[0]])
-
-#correct1 = tf.equal(tf.argmax(model.predict(np.array([[0, 204, 102]])), 1), tf.argmax(targetLabels, 1))
-#0, 204, 102 green
-#255, 51, 51, red
-#51, 51, 255, blue
-
-#model.compile({
-#optimizer: optimizer,
-#loss: 'cce'
-#});
-
-#for p in obj:
-  #  print('R: ' + p[0])
-  #  print('G: ' + p[1])
-  #  print('B: ' + p[2])
-  #  print('Value: ' + p[3])
-   # print('')
-
