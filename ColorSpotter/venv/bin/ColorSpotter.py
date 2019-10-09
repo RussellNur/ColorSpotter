@@ -15,16 +15,6 @@ from tkinter import mainloop
 import os
 import sys
 
-# master = Tk()
-# e = Entry(master)
-# e.pack()
-#
-# e.focus_set()
-#
-# b = Button(master, text="OK", width=10, command=e.get())
-# b.pack()
-#
-# mainloop()
 
 def main():
 
@@ -92,11 +82,9 @@ def main():
 
     # Define learning rate
     lr = 0.02
-
     # Creating an optimizer
     #with tf.name_scope('train') as scope:
-    #optimizer = keras.optimizers.Adam(lr=lr)
-    optimizer = tf.train.AdamOptimizer(learning_rate=lr)#.minimize(cost)
+    optimizer = tf.train.AdamOptimizer(learning_rate=lr)
 
     model.compile(optimizer=optimizer,
                   loss='categorical_crossentropy',
@@ -165,7 +153,7 @@ def main():
         print(os.path.basename(file_path))
         if file_path == '':
             sys.exit()
-            
+
         imageRGB = getRGB(os.path.basename(file_path))
         colorsDictionary = {
             "red": 0,
