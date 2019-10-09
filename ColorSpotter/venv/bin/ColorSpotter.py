@@ -142,17 +142,41 @@ def main():
     print('Should be Orange. Predicted:')
     print(colorsArray[prediction9.argmax(1)[0]])
 
-
-
+    # Obtaining file name
+    # root = tk.Tk()
+    # root.withdraw()
+    # file_path = ''
+    # file_path = filedialog.askopenfilename()
+    # print(os.path.basename(file_path))
+    # if file_path == '':
+    #     sys.exit()
+    count = 0
     while True:
-        # Obtaining file name
-        root = tk.Tk()
-        root.withdraw()
-        file_path = ''
-        file_path = filedialog.askopenfilename()
-        print(os.path.basename(file_path))
-        if file_path == '':
-            sys.exit()
+        if count == 0:
+            def quitCommand():
+                sys.exit()
+
+            def continueCommand():
+                root.quit()
+
+            def choosePic():
+                root = tk.Tk()
+                root.withdraw()
+                global file_path
+                file_path = filedialog.askopenfilename()
+                print(os.path.basename(file_path))
+                if file_path == '':
+                    sys.exit()
+                root.quit()
+
+            root = tk.Tk()
+            root.title("ColorSpotter")
+            root.geometry("250x100+180+400")
+            Button(root, text='Quit', command=quitCommand).pack()
+            Button(root, text='Choose a picture', command=choosePic).pack()
+
+        root.mainloop()
+
 
         imageRGB = getRGB(os.path.basename(file_path))
         colorsDictionary = {
@@ -187,6 +211,13 @@ def main():
         print("The color of the selected area is : " + label)
         messagebox.showinfo("Predicted Color", "The color of the selected area is : " + label)
 
+
+        if count == 0:
+            Button(root, text='Continue', command=continueCommand).pack()
+
+        count =+ 1
+
+
 def getRGB(imageName):
     """
 
@@ -199,7 +230,7 @@ def getRGB(imageName):
     #imPIL = Image.open("image_1.jpg", "r")
 
     # Select ROI
-    r = cv2.selectROI(im)
+    r = cv2.selectROI("ColorSpotter - select a rectangle", im)
 
     # Crop image
     imCrop = im[int(r[1]):int(r[1] + r[3]), int(r[0]):int(r[0] + r[2])]
