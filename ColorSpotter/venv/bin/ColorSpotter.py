@@ -8,10 +8,13 @@ from keras.models import Sequential
 from keras.utils.np_utils import to_categorical
 from matplotlib import pyplot as plt
 import tkinter as tk
+from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import Button
 from tkinter import mainloop
+from PIL import ImageTk, Image
+
 import os
 import sys
 
@@ -142,14 +145,7 @@ def main():
     print('Should be Orange. Predicted:')
     print(colorsArray[prediction9.argmax(1)[0]])
 
-    # Obtaining file name
-    # root = tk.Tk()
-    # root.withdraw()
-    # file_path = ''
-    # file_path = filedialog.askopenfilename()
-    # print(os.path.basename(file_path))
-    # if file_path == '':
-    #     sys.exit()
+    #file_path = ''
     count = 0
     while True:
         if count == 0:
@@ -163,57 +159,80 @@ def main():
                 root = tk.Tk()
                 root.withdraw()
                 global file_path
+                global previous
+                # print(file_path)
+                try:
+                    file_path
+                except NameError:
+                    previous = ''
+                    print("file_path wasn't defined yet.")
+                else:
+                    previous = file_path
                 file_path = filedialog.askopenfilename()
                 print(os.path.basename(file_path))
                 if file_path == '':
-                    sys.exit()
+                     file_path = previous
                 root.quit()
 
             root = tk.Tk()
+            def on_closing():
+                if messagebox.askokcancel("Quit", "Do you want to quit?"):
+                    sys.exit()
             root.title("ColorSpotter")
-            root.geometry("250x100+180+400")
-            Button(root, text='Quit', command=quitCommand).pack()
-            Button(root, text='Choose a picture', command=choosePic).pack()
+            root.geometry("400x340+160+370")
+            frame = Frame(root, relief=RIDGE, borderwidth=2)
+            frame.pack(fill=BOTH,expand=1)
+            frame.config(background='light blue')
+            label = Label(frame, text="ColorSpotter", bg='light blue',font=('Times 25 bold'))
+            label.pack(side=TOP)
+            backgroundPicFilename = ImageTk.PhotoImage(Image.open("background.jpg"))
+            background_label = Label(frame, image=backgroundPicFilename)
+            background_label.pack(side=TOP)
+            quit = Button(frame, text='Quit', command=quitCommand)
+            quit.pack()
+            picture = Button(frame, text='Choose a picture', command=choosePic)
+            picture.pack()
+            continueButton = Button(frame, text='Continue', state = DISABLED,command=continueCommand)
+            continueButton.pack()
 
+        root.protocol("WM_DELETE_WINDOW", on_closing)
         root.mainloop()
 
 
-        imageRGB = getRGB(os.path.basename(file_path))
-        colorsDictionary = {
-            "red": 0,
-            "orange": 0,
-            "yellow": 0,
-            "green": 0,
-            "blue": 0,
-            "purple": 0,
-            "brown": 0,
-            "gray": 0,
-            "pink": 0
-        }
+        if file_path != '':
+            imageRGB = getRGB(os.path.basename(file_path))
+            colorsDictionary = {
+                "red": 0,
+                "orange": 0,
+                "yellow": 0,
+                "green": 0,
+                "blue": 0,
+                "purple": 0,
+                "brown": 0,
+                "gray": 0,
+                "pink": 0
+            }
 
-        for x in range(0, len(imageRGB), 1):
-            #print("LOOK: ")
-            #print(imageRGB[x])
-            prediction = model.predict(np.array([imageRGB[x]]))
+            for x in range(0, len(imageRGB), 1):
+                #print("LOOK: ")
+                #print(imageRGB[x])
+                prediction = model.predict(np.array([imageRGB[x]]))
 
-            #print("Color predicterd:")
+                #print("Color predicterd:")
+                #print(colorsArray[prediction.argmax(1)[0]])
+                colorsDictionary[colorsArray[prediction.argmax(1)[0]][0]] = colorsDictionary.get(colorsArray[prediction.argmax(1)[0]][0]) + 1
+
             #print(colorsArray[prediction.argmax(1)[0]])
-            colorsDictionary[colorsArray[prediction.argmax(1)[0]][0]] = colorsDictionary.get(colorsArray[prediction.argmax(1)[0]][0]) + 1
-
-        #print(colorsArray[prediction.argmax(1)[0]])
-        print(colorsDictionary)
-        max = 0
-        label = ""
-        for key, value in colorsDictionary.items():
-            if value > max:
-                max = value
-                label = key
-        print("The color of the selected area is : " + label)
-        messagebox.showinfo("Predicted Color", "The color of the selected area is : " + label)
-
-
-        if count == 0:
-            Button(root, text='Continue', command=continueCommand).pack()
+            print(colorsDictionary)
+            max = 0
+            label = ""
+            for key, value in colorsDictionary.items():
+                if value > max:
+                    max = value
+                    label = key
+            print("The color of the selected area is : " + label)
+            messagebox.showinfo("Predicted Color", "The color of the selected area is : " + label)
+            continueButton.configure(state=NORMAL)
 
         count =+ 1
 
@@ -226,8 +245,6 @@ def getRGB(imageName):
     # opencv tutorial is from here: https://www.learnopencv.com/how-to-select-a-bounding-box-roi-in-opencv-cpp-python/
     # Read image
     im = cv2.imread(imageName)
-    # Read image using PIL
-    #imPIL = Image.open("image_1.jpg", "r")
 
     # Select ROI
     r = cv2.selectROI("ColorSpotter - select a rectangle", im)

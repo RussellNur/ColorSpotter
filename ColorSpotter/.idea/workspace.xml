@@ -113,7 +113,8 @@
       <workItem from="1570117770286" duration="280000" />
       <workItem from="1570175173199" duration="727000" />
       <workItem from="1570176148639" duration="2000000" />
-      <workItem from="1570595462038" duration="15734000" />
+      <workItem from="1570595462038" duration="16146000" />
+      <workItem from="1570637201750" duration="8316000" />
     </task>
     <servers />
   </component>
@@ -121,7 +122,7 @@
     <option name="version" value="1" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ColorSpotter$ColorSpotter.coverage" NAME="ColorSpotter Coverage Results" MODIFIED="1570636049630" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv/bin" />
+    <SUITE FILE_PATH="coverage/ColorSpotter$ColorSpotter.coverage" NAME="ColorSpotter Coverage Results" MODIFIED="1570698805866" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv/bin" />
     <SUITE FILE_PATH="coverage/ColorSpotter$ImageProcessing.coverage" NAME="ImageProcessing Coverage Results" MODIFIED="1570096996525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv/bin" />
   </component>
 </project>
