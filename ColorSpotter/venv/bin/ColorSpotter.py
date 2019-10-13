@@ -1,12 +1,16 @@
 import json
 
+import matplotlib
+matplotlib.use('TkAgg')
 import cv2
 import numpy as np
 import tensorflow as tf
 from keras.layers import Dense, Activation
 from keras.models import Sequential
 from keras.utils.np_utils import to_categorical
+
 from matplotlib import pyplot as plt
+
 import tkinter as tk
 from tkinter import *
 from tkinter import filedialog
@@ -17,6 +21,9 @@ from PIL import ImageTk, Image
 
 import os
 import sys
+
+cv2.ocl.setUseOpenCL(False)
+
 
 
 def main():
@@ -105,7 +112,7 @@ def main():
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
     plt.show()
-    # summarize history for loss
+    # # summarize history for loss
     plt.plot(history.history['loss'])
     plt.plot(history.history['val_loss'])
     plt.title('model loss')
@@ -114,8 +121,6 @@ def main():
     plt.legend(['train', 'test'], loc='upper left')
     plt.show()
 
-    #pyplot.plot(history.history['accuracy'])
-    #pyplot.show()
 
     prediction1 = model.predict(np.array([[0, 204, 102]]))
     print('Should be Green. Predicted:')
